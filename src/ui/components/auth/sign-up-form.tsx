@@ -24,11 +24,18 @@ export function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form autoComplete="off">
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="name">Nome</Label>
-                <Input id="name" type="text" placeholder="Seu nome" required />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Seu nome"
+                  required
+                  name="sign-up-name"
+                  autoComplete="sign-up-name"
+                />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="email">E-mail</Label>
@@ -37,15 +44,29 @@ export function SignUpForm({
                   type="email"
                   placeholder="voce@exemplo.com"
                   required
+                  name="sign-up-email"
+                  autoComplete="sign-up-email"
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Senha</Label>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  name="sign-up-password"
+                  autoComplete="sign-up-password"
+                />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="confirmPassword">Confirme a senha</Label>
-                <Input id="confirmPassword" type="password" required />
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  required
+                  name="sign-up-confirm-password"
+                  autoComplete="sign-up-confirm-password"
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">
