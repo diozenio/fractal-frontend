@@ -24,7 +24,7 @@ export function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form autoComplete="off">
+          <form>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="name">Nome</Label>
@@ -33,8 +33,7 @@ export function SignUpForm({
                   type="text"
                   placeholder="Seu nome"
                   required
-                  name="sign-up-name"
-                  autoComplete="sign-up-name"
+                  name="name"
                 />
               </div>
               <div className="grid gap-3">
@@ -44,19 +43,12 @@ export function SignUpForm({
                   type="email"
                   placeholder="voce@exemplo.com"
                   required
-                  name="sign-up-email"
-                  autoComplete="sign-up-email"
+                  name="email"
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Senha</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  name="sign-up-password"
-                  autoComplete="sign-up-password"
-                />
+                <Input id="password" type="password" required name="password" />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="confirmPassword">Confirme a senha</Label>
@@ -64,8 +56,7 @@ export function SignUpForm({
                   id="confirmPassword"
                   type="password"
                   required
-                  name="sign-up-confirm-password"
-                  autoComplete="sign-up-confirm-password"
+                  name="confirmPassword"
                 />
               </div>
               <div className="flex flex-col gap-3">
