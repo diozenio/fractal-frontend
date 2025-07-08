@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/ui/primitives/button";
 import {
@@ -63,7 +65,12 @@ export function SignUpForm({
                 <Button type="submit" className="w-full">
                   Criar conta
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  type="button"
+                  className="w-full"
+                  onClick={() => alert("Google Sign-In not implemented yet")}
+                >
                   Entrar com Google
                 </Button>
               </div>
