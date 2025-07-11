@@ -11,11 +11,16 @@ import {
 } from "@/ui/primitives/card";
 import { Input } from "@/ui/primitives/input";
 import { Label } from "@/ui/primitives/label";
+import { signIn } from "next-auth/react";
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const handleConnectGoogle = async () => {
+    await signIn("google", { callbackUrl: "/auth/signup" })
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -69,7 +74,7 @@ export function SignUpForm({
                   variant="outline"
                   type="button"
                   className="w-full"
-                  onClick={() => alert("Google Sign-In not implemented yet")}
+                  onClick={handleConnectGoogle}
                 >
                   Entrar com Google
                 </Button>
