@@ -1,4 +1,8 @@
+"use client";
+
+import { useLogin } from "@/hooks/auth/useLogin";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription } from "@/ui/primitives/alert";
 import { Button } from "@/ui/primitives/button";
 import {
   Card,
@@ -7,15 +11,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui/primitives/card";
-import { Input } from "@/ui/primitives/input";
 import { Label } from "@/ui/primitives/label";
+import { CircleX } from "lucide-react";
+import { FormInput } from "../form/FormInput";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { handleSubmit, isPending, errors, message, success } = useLogin();
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {!success && message && (
+        <Alert variant="destructive">
+          <CircleX />
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Entrar na sua conta</CardTitle>
@@ -24,16 +37,16 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
-                <Input
+                <FormInput
                   id="email"
-                  type="email"
                   name="email"
                   placeholder="seu@email.com"
                   required
+                  errors={errors?.email}
                 />
               </div>
               <div className="grid gap-3">
@@ -46,13 +59,24 @@ export function LoginForm({
                     Esqueceu a senha?
                   </a>
                 </div>
-                <Input id="password" type="password" name="password" required />
+                <FormInput
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  errors={errors?.password}
+                />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" loading={isPending}>
                   Entrar
                 </Button>
-                <Button variant="outline" className="w-full" type="button">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  type="button"
+                  disabled={isPending}
+                >
                   Entrar com o Google
                 </Button>
               </div>
