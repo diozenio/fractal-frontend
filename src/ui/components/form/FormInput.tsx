@@ -1,8 +1,7 @@
-import { useId } from "react";
-
 import { Input } from "@/ui/primitives/input";
 
 interface FormInputProps {
+  id?: string;
   name: string;
   placeholder?: string;
   type?: string;
@@ -11,15 +10,13 @@ interface FormInputProps {
 }
 
 function FormInput({
+  id,
   name,
   required = false,
   type = "text",
   errors,
   ...rest
 }: FormInputProps) {
-  const randomID = useId();
-  const id = `${name}-${randomID}`;
-
   return (
     <div className="space-y-1">
       <Input id={id} name={name} required={required} type={type} {...rest} />
