@@ -1,6 +1,8 @@
 "use client";
 
+import { useSignUp } from "@/hooks/auth/useSignUp";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription } from "@/ui/primitives/alert";
 import { Button } from "@/ui/primitives/button";
 import {
   Card,
@@ -9,15 +11,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui/primitives/card";
-import { Input } from "@/ui/primitives/input";
 import { Label } from "@/ui/primitives/label";
+import { CircleX } from "lucide-react";
+import { FormInput } from "../form/FormInput";
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { handleSubmit, isPending, errors, message, success } = useSignUp();
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {!success && message && (
+        <Alert variant="destructive">
+          <CircleX />
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Crie sua conta</CardTitle>
@@ -26,46 +37,55 @@ export function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="name">Nome</Label>
-                <Input
+                <FormInput
                   id="name"
-                  type="text"
+                  name="name"
                   placeholder="Seu nome"
                   required
-                  name="name"
+                  errors={errors?.name}
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="email">E-mail</Label>
-                <Input
+                <FormInput
                   id="email"
                   type="email"
                   placeholder="voce@exemplo.com"
                   required
                   name="email"
+                  errors={errors?.email}
                 />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Senha</Label>
-                <Input id="password" type="password" required name="password" />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="confirmPassword">Confirme a senha</Label>
-                <Input
-                  id="confirmPassword"
+                <FormInput
+                  id="password"
                   type="password"
                   required
-                  name="confirmPassword"
+                  name="password"
+                  errors={errors?.password}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="confirm-password">Confirme a senha</Label>
+                <FormInput
+                  id="confirm-password"
+                  type="password"
+                  required
+                  name="confirm-password"
+                  errors={errors?.["confirm-password"]}
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" loading={isPending}>
                   Criar conta
                 </Button>
                 <Button
+                  disabled={isPending}
                   variant="outline"
                   type="button"
                   className="w-full"
