@@ -11,9 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/ui/primitives/card";
-import { Input } from "@/ui/primitives/input";
 import { Label } from "@/ui/primitives/label";
 import { CircleX } from "lucide-react";
+import { FormInput } from "../form/FormInput";
 
 export function LoginForm({
   className,
@@ -41,12 +41,11 @@ export function LoginForm({
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
+                <FormInput
                   name="email"
                   placeholder="seu@email.com"
                   required
+                  errors={errors?.email}
                 />
               </div>
               <div className="grid gap-3">
@@ -59,13 +58,23 @@ export function LoginForm({
                     Esqueceu a senha?
                   </a>
                 </div>
-                <Input id="password" type="password" name="password" required />
+                <FormInput
+                  name="password"
+                  type="password"
+                  required
+                  errors={errors?.password}
+                />
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" loading={isPending}>
                   Entrar
                 </Button>
-                <Button variant="outline" className="w-full" type="button">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  type="button"
+                  disabled={isPending}
+                >
                   Entrar com o Google
                 </Button>
               </div>

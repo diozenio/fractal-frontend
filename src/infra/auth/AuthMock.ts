@@ -6,6 +6,7 @@ import {
 } from "@/core/domain/models/auth";
 import AuthAdapter from "@/core/interfaces/adapters/AuthAdapter";
 import { generateToken } from "@/lib/jwt";
+import { delay } from "@/utils/delay";
 
 const MOCKED_USER = {
   id: "cmbsdwuji00004ghv1mbx05mk",
@@ -23,7 +24,7 @@ export default class AuthMock extends AuthAdapter {
     if (!email || !password) {
       return Promise.resolve({
         statusCode: 400,
-        message: "Email and password are required",
+        message: "Email e senha são obrigatórios.",
         success: false,
       });
     }
@@ -31,14 +32,16 @@ export default class AuthMock extends AuthAdapter {
     if (email !== MOCKED_USER.email || password !== MOCKED_USER.password) {
       return Promise.resolve({
         statusCode: 401,
-        message: "Authentication failed. Please verify your credentials.",
+        message: "Falha na autenticação. Verifique suas credenciais.",
         success: false,
       });
     }
 
+    await delay(1000);
+
     return Promise.resolve({
       statusCode: 200,
-      message: "Login successful",
+      message: "Login realizado com sucesso.",
       success: true,
       data: {
         token: generateToken({
@@ -66,14 +69,16 @@ export default class AuthMock extends AuthAdapter {
     if (email === MOCKED_USER.email) {
       return Promise.resolve({
         statusCode: 400,
-        message: "User already exists",
+        message: "Usuário já cadastrado.",
         success: false,
       });
     }
 
+    await delay(1000);
+
     return Promise.resolve({
       statusCode: 201,
-      message: "User created successfully",
+      message: "Usuário criado com sucesso.",
       success: true,
       data: {
         token: generateToken({
@@ -102,9 +107,11 @@ export default class AuthMock extends AuthAdapter {
   }
 
   async logout(): Promise<LogoutResponse> {
+    await delay(1000);
+
     return Promise.resolve({
       statusCode: 200,
-      message: "Logged out successfully",
+      message: "Logout realizado com sucesso.",
       success: true,
     });
   }

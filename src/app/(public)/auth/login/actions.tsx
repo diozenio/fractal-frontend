@@ -30,7 +30,7 @@ export async function loginAction(
     if (!token) {
       return {
         success: false,
-        message: "Login failed. No token received.",
+        message: "Falha no login. Token não recebido.",
         errors: null,
       };
     }
@@ -39,7 +39,7 @@ export async function loginAction(
 
     return {
       success: true,
-      message: "Login successful",
+      message: "Login realizado com sucesso.",
       errors: null,
       data,
     };
@@ -56,16 +56,16 @@ export async function loginAction(
       return {
         success: false,
         message:
-          error.response.data.message || "An error occurred during login.",
+          error.response.data.message || "Ocorreu um erro durante o login.",
         errors: null,
       };
     }
 
-    console.error("Unexpected error during login:", error);
+    console.error("Erro inesperado durante o login:", error);
 
     return {
       success: false,
-      message: "An unexpected error occurred.",
+      message: "Ocorreu um erro inesperado.",
       errors: null,
     };
   }
