@@ -1,4 +1,8 @@
+"use client";
+
+import { useLogin } from "@/hooks/auth/useLogin";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription } from "@/ui/primitives/alert";
 import { Button } from "@/ui/primitives/button";
 import {
   Card,
@@ -9,13 +13,22 @@ import {
 } from "@/ui/primitives/card";
 import { Input } from "@/ui/primitives/input";
 import { Label } from "@/ui/primitives/label";
+import { CircleX } from "lucide-react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { handleSubmit, isPending, errors, message, success } = useLogin();
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {!success && message && (
+        <Alert variant="destructive">
+          <CircleX />
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Entrar na sua conta</CardTitle>
@@ -24,7 +37,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
