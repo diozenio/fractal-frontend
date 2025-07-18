@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignUp } from "@/hooks/auth/useSignUp";
+import { useLogin } from "@/hooks/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/ui/primitives/alert";
 import { Button } from "@/ui/primitives/button";
@@ -15,11 +15,11 @@ import { Label } from "@/ui/primitives/label";
 import { CircleX } from "lucide-react";
 import { FormInput } from "../form/FormInput";
 
-export function SignUpForm({
+export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { handleSubmit, isPending, errors, message, success } = useSignUp();
+  const { handleSubmit, isPending, errors, message, success } = useLogin();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -31,74 +31,60 @@ export function SignUpForm({
       )}
       <Card>
         <CardHeader>
-          <CardTitle>Crie sua conta</CardTitle>
+          <CardTitle>Entrar na sua conta</CardTitle>
           <CardDescription>
-            Preencha os dados abaixo para se cadastrar na plataforma.
+            Insira seu e-mail abaixo para acessar sua conta
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
-                <Label htmlFor="name">Nome</Label>
-                <FormInput
-                  id="name"
-                  name="name"
-                  placeholder="Seu nome"
-                  required
-                  errors={errors?.name}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="email">Email</Label>
                 <FormInput
                   id="email"
-                  type="email"
-                  placeholder="voce@exemplo.com"
-                  required
                   name="email"
+                  placeholder="seu@email.com"
+                  required
                   errors={errors?.email}
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="password">Senha</Label>
+                <div className="flex items-center">
+                  <Label htmlFor="password">Senha</Label>
+                  <a
+                    href="#"
+                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >
+                    Esqueceu a senha?
+                  </a>
+                </div>
                 <FormInput
                   id="password"
-                  type="password"
-                  required
                   name="password"
-                  errors={errors?.password}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="confirm-password">Confirme a senha</Label>
-                <FormInput
-                  id="confirm-password"
                   type="password"
                   required
-                  name="confirm-password"
-                  errors={errors?.["confirm-password"]}
+                  errors={errors?.password}
                 />
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full" loading={isPending}>
-                  Criar conta
+                  Entrar
                 </Button>
                 <Button
-                  disabled={isPending}
                   variant="outline"
-                  type="button"
                   className="w-full"
-                  onClick={() => alert("Google Sign-In not implemented yet")}
+                  type="button"
+                  disabled={isPending}
                 >
-                  Entrar com Google
+                  Entrar com o Google
                 </Button>
               </div>
             </div>
             <div className="mt-4 text-center text-sm">
-              Já tem uma conta?{" "}
-              <a href="/auth/login" className="underline underline-offset-4">
-                Fazer login
+              Ainda não tem uma conta?{" "}
+              <a href="/auth/signup" className="underline underline-offset-4">
+                Cadastre-se
               </a>
             </div>
           </form>
