@@ -14,6 +14,7 @@ import {
 import { Label } from "@/ui/primitives/label";
 import { CircleX } from "lucide-react";
 import { FormInput } from "../form/FormInput";
+import { authenticateWithGoogle } from "@/app/(public)/auth/actions";
 
 export function LoginForm({
   className,
@@ -67,27 +68,27 @@ export function LoginForm({
                   errors={errors?.password}
                 />
               </div>
-              <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full" loading={isPending}>
-                  Entrar
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  type="button"
-                  disabled={isPending}
-                >
-                  Entrar com o Google
-                </Button>
-              </div>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Ainda não tem uma conta?{" "}
-              <a href="/auth/signup" className="underline underline-offset-4">
-                Cadastre-se
-              </a>
+              <Button type="submit" className="w-full" loading={isPending}>
+                Entrar
+              </Button>
             </div>
           </form>
+          <form action={authenticateWithGoogle}>
+            <Button
+              variant="outline"
+              className="w-full mt-3"
+              type="submit"
+              disabled={isPending}
+            >
+              Entrar com o Google
+            </Button>
+          </form>
+          <div className="mt-4 text-center text-sm">
+            Ainda não tem uma conta?{" "}
+            <a href="/auth/signup" className="underline underline-offset-4">
+              Cadastre-se
+            </a>
+          </div>
         </CardContent>
       </Card>
     </div>

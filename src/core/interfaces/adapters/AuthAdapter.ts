@@ -3,10 +3,12 @@ import {
   LogoutResponse,
   SignUpResponse,
   User,
-} from '@/core/domain/models/auth';
+} from "@/core/domain/models/auth";
 
 export default abstract class AuthAdapter {
   abstract login(email: string, password: string): Promise<LoginResponse>;
+
+  abstract loginWithGoogle(code: string): Promise<LoginResponse>;
 
   abstract signUpWithCredentials(
     email: string,

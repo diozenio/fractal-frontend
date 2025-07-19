@@ -61,6 +61,39 @@ export default class AuthMock extends AuthAdapter {
     });
   }
 
+  async loginWithGoogle(code: string): Promise<LoginResponse> {
+    if (!code) {
+      return Promise.resolve({
+        statusCode: 400,
+        message: "Código de autorização do Google é obrigatório.",
+        success: false,
+      });
+    }
+
+    await delay(1000);
+
+    return Promise.resolve({
+      statusCode: 200,
+      message: "Login com Google realizado com sucesso.",
+      success: true,
+      data: {
+        token: generateToken({
+          payload: {
+            sub: MOCKED_USER.id,
+            email: MOCKED_USER.email,
+          },
+          secret: process.env.JWT_SECRET || "default_secret",
+          expiresIn: "30d",
+        }),
+        user: {
+          id: MOCKED_USER.id,
+          name: MOCKED_USER.name,
+          email: MOCKED_USER.email,
+        },
+      },
+    });
+  }
+
   async signUpWithCredentials(
     email: string,
     password: string,
