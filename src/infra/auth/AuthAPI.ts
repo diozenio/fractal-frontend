@@ -37,7 +37,7 @@ export default class AuthAPI extends AuthAdapter {
   async getUserSession(): Promise<User> {
     const { data } = await client.get("/auth/me");
 
-    return data.data;
+    return data;
   }
 
   async logout() {
