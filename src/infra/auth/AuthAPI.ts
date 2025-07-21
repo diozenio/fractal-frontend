@@ -1,4 +1,4 @@
-import { LogoutResponse, User } from "@/core/domain/models/auth";
+import { LoginResponse, User, LogoutResponse } from "@/core/domain/models/auth";
 import AuthAdapter from "@/core/interfaces/adapters/AuthAdapter";
 import { client } from "@/lib/api/client";
 
@@ -11,6 +11,14 @@ export default class AuthAPI extends AuthAdapter {
     const { data } = await client.post("/auth/login", {
       email,
       password,
+    });
+
+    return data;
+  }
+
+  async loginWithGoogle(code: string): Promise<LoginResponse> {
+    const { data } = await client.post("/auth/google", {
+      code,
     });
 
     return data;
