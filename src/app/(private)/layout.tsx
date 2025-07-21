@@ -1,11 +1,13 @@
 import { PropsWithChildren } from "react";
 
-import { AppLoadingProvider, AuthProvider } from "@/providers";
+import { AppLoadingProvider, AuthProvider, SidebarProvider } from "@/providers";
 
 export default function PrivateLayout({ children }: PropsWithChildren) {
   return (
     <AuthProvider>
-      <AppLoadingProvider>{children}</AppLoadingProvider>
+      <AppLoadingProvider>
+        <SidebarProvider>{children}</SidebarProvider>
+      </AppLoadingProvider>
     </AuthProvider>
   );
 }
