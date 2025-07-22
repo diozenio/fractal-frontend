@@ -169,4 +169,19 @@
     @apply bg-background text-foreground font-sans antialiased;
     letter-spacing: var(--tracking-normal);
   }
+
+  .scrollbar-custom {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply rounded-full  bg-neutral-900;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply rounded-full  bg-neutral-700;
+    }
+  }
 }
