@@ -1,7 +1,7 @@
-import { TaskProps } from "@/ui/components/tasks";
+import { TaskProps, TaskStatus } from "@/ui/components/tasks";
 
-export const tasks: Record<string, TaskProps[]> = {
-  planned: [
+export const tasks: Record<TaskStatus, TaskProps[]> = {
+  PLANNED: [
     {
       id: "1",
       title: "Criar tipagem do retorno da api de tarefas",
@@ -68,7 +68,7 @@ export const tasks: Record<string, TaskProps[]> = {
       status: "PLANNED",
     },
   ],
-  todo: [
+  TODO: [
     {
       id: "11",
       title: "Conectar frontend com backend",
@@ -85,7 +85,7 @@ export const tasks: Record<string, TaskProps[]> = {
     },
     { id: "13", title: "Revisar nomenclatura de variáveis", status: "TODO" },
   ],
-  inProgress: [
+  IN_PROGRESS: [
     {
       id: "21",
       title: "Refatorar service de usuários",
@@ -95,7 +95,7 @@ export const tasks: Record<string, TaskProps[]> = {
       subtasks: { total: 5, completed: 3 },
     },
   ],
-  done: [
+  DONE: [
     {
       id: "31",
       title: "Setup inicial do projeto",

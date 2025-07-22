@@ -1,14 +1,8 @@
 "use client";
-import { TasksColumn } from "@/ui/components/tasks";
+
+import { TasksBoard } from "@/ui/components/tasks";
 import { Button } from "@/ui/primitives/button";
-import {
-  Circle,
-  CircleCheck,
-  CircleDashed,
-  CircleDot,
-  ListFilter,
-} from "lucide-react";
-import { tasks } from "./tasks";
+import { ListFilter } from "lucide-react";
 
 export default function Home() {
   return (
@@ -24,45 +18,7 @@ export default function Home() {
           Filtrar
         </Button>
       </header>
-      <div className="flex-1 overflow-x-auto pb-4">
-        <div className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">
-          <TasksColumn
-            icon={
-              <CircleDashed size={16} className="text-muted-foreground/50" />
-            }
-            title="Planejado"
-            count={tasks.planned.length}
-            tasks={tasks.planned}
-          />
-
-          <TasksColumn
-            icon={<Circle size={16} />}
-            title="A fazer"
-            count={tasks.todo.length}
-            tasks={tasks.todo}
-          />
-
-          <TasksColumn
-            icon={<CircleDot size={16} className="text-green-500" />}
-            title="Em Progresso"
-            count={tasks.inProgress.length}
-            tasks={tasks.inProgress}
-          />
-
-          <TasksColumn
-            icon={
-              <CircleCheck
-                size={20}
-                className="text-background"
-                fill="var(--color-blue-500)"
-              />
-            }
-            title="Feito"
-            count={tasks.done.length}
-            tasks={tasks.done}
-          />
-        </div>
-      </div>
+      <TasksBoard />
     </div>
   );
 }

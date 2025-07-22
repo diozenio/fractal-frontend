@@ -1,8 +1,10 @@
 import { Button } from "@/ui/primitives/button";
 import { Plus } from "lucide-react";
-import Task, { TaskProps } from "./task";
+import Task, { TaskProps, TaskStatus } from "./task";
+import * as Kanban from "@/ui/primitives/kanban";
 
-interface TasksColumnProps {
+interface TasksColumnProps
+  extends Omit<React.ComponentProps<typeof Kanban.Column>, "children"> {
   icon?: React.ReactNode;
   title: string;
   count: number;
@@ -16,9 +18,15 @@ export default function TasksColumn({
   count,
   onAdd,
   tasks = [],
+  value,
+  ...props
 }: TasksColumnProps) {
   return (
-    <div className="h-full bg-muted/10 rounded-lg p-3 overflow-y-auto scroll-smooth scrollbar-custom ">
+    <Kanban.Column
+      value={value}
+      {...props}
+      className="h-full !bg-transparent rounded-lg p-3 overflow-y-auto scroll-smooth scrollbar-custom "
+    >
       <header className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           {icon}
@@ -31,9 +39,9 @@ export default function TasksColumn({
       </header>
       <div className="flex flex-col gap-2">
         {tasks.map((task) => (
-          <Task key={task.id} {...task} />
+          <Task key={task.id} {...task} status={value as TaskStatus} asHandle />
         ))}
       </div>
-    </div>
+    </Kanban.Column>
   );
 }

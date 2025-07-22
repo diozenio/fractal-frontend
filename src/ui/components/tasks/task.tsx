@@ -8,6 +8,8 @@ import {
   LoaderCircle,
 } from "lucide-react";
 
+import * as Kanban from "@/ui/primitives/kanban";
+
 enum PriorityLabels {
   "LOW" = "Baixa",
   "MEDIUM" = "Média",
@@ -28,13 +30,18 @@ const StatusIcons = {
   ),
 } as const;
 
-export interface TaskProps {
+export type TaskStatus = "PLANNED" | "TODO" | "IN_PROGRESS" | "DONE";
+
+export type TaskPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+
+export interface TaskProps
+  extends Omit<React.ComponentProps<typeof Kanban.Item>, "value"> {
   id: string;
   title: string;
   description?: string;
   dueDate?: string;
-  priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-  status?: "PLANNED" | "TODO" | "IN_PROGRESS" | "DONE";
+  priority?: TaskPriority;
+  status?: TaskStatus;
   subtasks?: {
     total: number;
     completed: number;
@@ -49,47 +56,50 @@ export default function Task({
   priority,
   status = "PLANNED",
   subtasks,
+  ...props
 }: TaskProps) {
   return (
-    <div className="w-full px-3 py-4 bg-muted/25 border border-card-foreground/5 rounded-lg flex flex-col gap-2.5 hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none min-h-16 justify-center">
-      <div className="flex flex-row items-center gap-2">
-        {StatusIcons[status]}
-        <span className="text-sm font-medium truncate">{title}</span>
-      </div>
-      {description && (
-        <span className="text-sm text-muted-foreground/80 truncate">
-          {description}
-        </span>
-      )}
-      {(dueDate || subtasks || priority) && (
+    <Kanban.Item key={id} value={id} asChild {...props}>
+      <div className="w-full px-3 py-4 bg-muted/25 border border-card-foreground/5 rounded-lg flex flex-col gap-2.5 hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none min-h-16 justify-center">
         <div className="flex flex-row items-center gap-2">
-          {dueDate && (
-            <div className="h-6 px-1.5 aspect-square flex items-center gap-1.5 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
-              <Calendar size={12} />
-              <span className="text-xs">
-                {new Date(dueDate).toLocaleString("pt-BR", {
-                  day: "2-digit",
-                  month: "2-digit",
-                })}
-              </span>
-            </div>
-          )}
-          {priority && (
-            <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
-              <Flag size={14} />
-              <span className="text-xs">{PriorityLabels[priority]}</span>
-            </div>
-          )}
-          {subtasks && (
-            <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
-              <LoaderCircle size={14} />
-              <span className="text-xs">
-                {subtasks.completed}/{subtasks.total}
-              </span>
-            </div>
-          )}
+          {StatusIcons[status]}
+          <span className="text-sm font-medium truncate">{title}</span>
         </div>
-      )}
-    </div>
+        {description && (
+          <span className="text-sm text-muted-foreground/80 truncate">
+            {description}
+          </span>
+        )}
+        {(dueDate || subtasks || priority) && (
+          <div className="flex flex-row items-center gap-2">
+            {dueDate && (
+              <div className="h-6 px-1.5 aspect-square flex items-center gap-1.5 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
+                <Calendar size={12} />
+                <span className="text-xs">
+                  {new Date(dueDate).toLocaleString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                  })}
+                </span>
+              </div>
+            )}
+            {priority && (
+              <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
+                <Flag size={14} />
+                <span className="text-xs">{PriorityLabels[priority]}</span>
+              </div>
+            )}
+            {subtasks && (
+              <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
+                <LoaderCircle size={14} />
+                <span className="text-xs">
+                  {subtasks.completed}/{subtasks.total}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </Kanban.Item>
   );
 }

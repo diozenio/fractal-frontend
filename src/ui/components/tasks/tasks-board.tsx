@@ -1,0 +1,54 @@
+import { useState } from "react";
+import { TaskStatus, TaskProps } from "./task";
+import { tasks } from "@/app/(private)/(dashboard)/tasks";
+import * as Kanban from "@/ui/primitives/kanban";
+import TasksColumn from "./tasks-column";
+import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
+
+const COLUMN_TITLES: Record<TaskStatus, string> = {
+  PLANNED: "Planejado",
+  TODO: "A Fazer",
+  IN_PROGRESS: "Em Progresso",
+  DONE: "Feito",
+};
+
+const COLUMN_ICONS: Record<TaskStatus, React.ReactNode> = {
+  PLANNED: <CircleDashed size={16} className="text-muted-foreground/50" />,
+  TODO: <Circle size={16} />,
+  IN_PROGRESS: <CircleDot size={16} className="text-green-500" />,
+  DONE: (
+    <CircleCheck
+      size={20}
+      className="text-background"
+      fill="var(--color-blue-500)"
+    />
+  ),
+};
+
+export default function TasksBoard() {
+  const [columns, setColumns] =
+    useState<Record<TaskStatus, TaskProps[]>>(tasks);
+
+  return (
+    <div className="flex-1 overflow-x-auto pb-4">
+      <Kanban.Root
+        value={columns}
+        onValueChange={setColumns}
+        getItemValue={(item) => item.id}
+      >
+        <Kanban.Board className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">
+          {Object.entries(columns).map(([columnValue, tasks]) => (
+            <TasksColumn
+              key={columnValue}
+              title={COLUMN_TITLES[columnValue as TaskStatus]}
+              value={columnValue}
+              tasks={tasks}
+              count={tasks.length}
+              icon={COLUMN_ICONS[columnValue as TaskStatus]}
+            />
+          ))}
+        </Kanban.Board>
+      </Kanban.Root>
+    </div>
+  );
+}
