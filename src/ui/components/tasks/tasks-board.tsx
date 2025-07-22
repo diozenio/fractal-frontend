@@ -4,6 +4,13 @@ import { tasks } from "@/app/(private)/(dashboard)/tasks";
 import * as Kanban from "@/ui/primitives/kanban";
 import TasksColumn from "./tasks-column";
 import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
+import {
+  useSensor,
+  useSensors,
+  MouseSensor,
+  TouchSensor,
+  KeyboardSensor,
+} from "@dnd-kit/core";
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
   PLANNED: "Planejado",
@@ -29,12 +36,23 @@ export default function TasksBoard() {
   const [columns, setColumns] =
     useState<Record<TaskStatus, TaskProps[]>>(tasks);
 
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
+  );
+
   return (
     <div className="flex-1 overflow-x-auto pb-4">
       <Kanban.Root
         value={columns}
         onValueChange={setColumns}
         getItemValue={(item) => item.id}
+        sensors={sensors}
       >
         <Kanban.Board className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">
           {Object.entries(columns).map(([columnValue, tasks]) => (

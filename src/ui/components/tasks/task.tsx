@@ -60,7 +60,13 @@ export default function Task({
 }: TaskProps) {
   return (
     <Kanban.Item key={id} value={id} asChild {...props}>
-      <div className="w-full px-3 py-4 bg-muted/25 border border-card-foreground/5 rounded-lg flex flex-col gap-2.5 hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none min-h-16 justify-center">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("Clicou na task:", id);
+        }}
+        className="w-full px-3 py-4 bg-muted/25 border border-card-foreground/5 rounded-lg flex flex-col gap-2.5 hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none min-h-16 justify-center"
+      >
         <div className="flex flex-row items-center gap-2">
           {StatusIcons[status]}
           <span className="text-sm font-medium truncate">{title}</span>
