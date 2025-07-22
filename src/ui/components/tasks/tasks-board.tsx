@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { TaskStatus, TaskProps } from "./task";
-import { tasks } from "@/app/(private)/(dashboard)/tasks";
+import { TaskStatus } from "./task";
 import * as Kanban from "@/ui/primitives/kanban";
 import TasksColumn from "./tasks-column";
 import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
@@ -11,6 +9,7 @@ import {
   TouchSensor,
   KeyboardSensor,
 } from "@dnd-kit/core";
+import { useTasksList } from "@/hooks/tasks/useTasksList";
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
   PLANNED: "Planejado",
@@ -33,8 +32,7 @@ const COLUMN_ICONS: Record<TaskStatus, React.ReactNode> = {
 };
 
 export default function TasksBoard() {
-  const [columns, setColumns] =
-    useState<Record<TaskStatus, TaskProps[]>>(tasks);
+  const { columns, setColumns } = useTasksList();
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
