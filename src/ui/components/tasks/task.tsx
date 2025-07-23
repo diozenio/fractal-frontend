@@ -8,6 +8,8 @@ import {
   LoaderCircle,
 } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 import * as Kanban from "@/ui/primitives/kanban";
 
 enum PriorityLabels {
@@ -17,7 +19,7 @@ enum PriorityLabels {
   "URGENT" = "Urgente",
 }
 
-const StatusIcons = {
+export const StatusIcons = {
   PLANNED: <CircleDashed size={16} className="text-muted-foreground/50" />,
   TODO: <Circle size={16} />,
   IN_PROGRESS: <CircleDot size={16} className="text-green-500" />,
@@ -41,11 +43,8 @@ export interface TaskProps
   description?: string;
   dueDate?: string;
   priority?: TaskPriority;
-  status?: TaskStatus;
-  subtasks?: {
-    total: number;
-    completed: number;
-  };
+  status: TaskStatus;
+  subtasks?: TaskProps[];
 }
 
 export default function Task({
@@ -58,12 +57,13 @@ export default function Task({
   subtasks,
   ...props
 }: TaskProps) {
+  const router = useRouter();
   return (
     <Kanban.Item key={id} value={id} asChild {...props}>
       <div
         onClick={(e) => {
           e.stopPropagation();
-          console.log("Clicou na task:", id);
+          router.push(`/tasks/${id}`);
         }}
         className="w-full px-3 py-4 bg-muted/25 border border-card-foreground/5 rounded-lg flex flex-col gap-2.5 hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none min-h-16 justify-center"
       >
@@ -99,7 +99,11 @@ export default function Task({
               <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
                 <LoaderCircle size={14} />
                 <span className="text-xs">
-                  {subtasks.completed}/{subtasks.total}
+                  {
+                    subtasks.filter((subtask) => subtask.status === "DONE")
+                      .length
+                  }
+                  /{subtasks.length}
                 </span>
               </div>
             )}

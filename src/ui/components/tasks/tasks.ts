@@ -3,12 +3,23 @@ import { TaskProps } from "@/ui/components/tasks";
 export const tasks: TaskProps[] = [
   {
     id: "1",
-    title: "Criar tipagem do retorno da api de tarefas",
+    title: "Criar tipagem do retorno da API de tarefas",
     description: "Definir a estrutura de dados para as tarefas.",
     dueDate: "2023-10-15T00:00:00Z",
     priority: "HIGH",
     status: "PLANNED",
-    subtasks: { total: 2, completed: 0 },
+    subtasks: [
+      {
+        id: "1.1",
+        title: "Mapear dados do backend",
+        status: "PLANNED",
+      },
+      {
+        id: "1.2",
+        title: "Criar interface TaskResponse",
+        status: "PLANNED",
+      },
+    ],
   },
   {
     id: "2",
@@ -46,8 +57,24 @@ export const tasks: TaskProps[] = [
   {
     id: "7",
     title: "Esboçar arquitetura inicial do projeto",
-    subtasks: { total: 3, completed: 1 },
     status: "PLANNED",
+    subtasks: [
+      {
+        id: "7.1",
+        title: "Escolher padrão de arquitetura",
+        status: "DONE",
+      },
+      {
+        id: "7.2",
+        title: "Definir camadas principais",
+        status: "PLANNED",
+      },
+      {
+        id: "7.3",
+        title: "Desenhar fluxo de dados",
+        status: "PLANNED",
+      },
+    ],
   },
   {
     id: "8",
@@ -73,6 +100,23 @@ export const tasks: TaskProps[] = [
     priority: "URGENT",
     dueDate: "2023-10-22T00:00:00Z",
     status: "PLANNED",
+    subtasks: [
+      {
+        id: "11.1",
+        title: "Criar rota de login",
+        status: "PLANNED",
+      },
+      {
+        id: "11.2",
+        title: "Criar rota de cadastro",
+        status: "PLANNED",
+      },
+      {
+        id: "11.3",
+        title: "Criar rota de recuperação de senha",
+        status: "PLANNED",
+      },
+    ],
   },
   {
     id: "12",
@@ -99,7 +143,24 @@ export const tasks: TaskProps[] = [
     description: "Melhorar separação de responsabilidades.",
     priority: "MEDIUM",
     status: "IN_PROGRESS",
-    subtasks: { total: 5, completed: 3 },
+    subtasks: [
+      {
+        id: "15.1",
+        title: "Separar regras de negócio",
+        status: "DONE",
+        subtasks: [
+          { id: "15.1.1", title: "Criar camada de serviço", status: "DONE" },
+        ],
+      },
+      { id: "15.2", title: "Isolar validações", status: "DONE" },
+      { id: "15.3", title: "Criar camada de repositório", status: "DONE" },
+      {
+        id: "15.4",
+        title: "Refatorar chamadas do controller",
+        status: "IN_PROGRESS",
+      },
+      { id: "15.5", title: "Escrever testes", status: "PLANNED" },
+    ],
   },
   {
     id: "16",
@@ -123,8 +184,14 @@ export const tasks: TaskProps[] = [
   {
     id: "19",
     title: "Revisar README",
-    subtasks: { total: 1, completed: 1 },
     status: "DONE",
+    subtasks: [
+      {
+        id: "19.1",
+        title: "Corrigir instruções de instalação",
+        status: "DONE",
+      },
+    ],
   },
   {
     id: "20",
