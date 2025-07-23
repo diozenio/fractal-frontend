@@ -6,6 +6,17 @@ import { DatePicker } from "@/ui/components/date-picker";
 import { StatusIcons } from "@/ui/components/tasks";
 import { Button } from "@/ui/primitives/button";
 import {
+  Editable,
+  EditableArea,
+  EditableCancel,
+  EditableInput,
+  EditableLabel,
+  EditablePreview,
+  EditableSubmit,
+  EditableToolbar,
+  EditableTrigger,
+} from "@/ui/primitives/editable";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -28,7 +39,7 @@ import {
   Text,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, use } from "react";
+import { useEffect, use, useState, useRef } from "react";
 
 export default function TaskPage({
   params,
@@ -40,6 +51,8 @@ export default function TaskPage({
   const router = useRouter();
 
   const setItems = useBreadcrumbStore((s) => s.setItems);
+  const [title, setTitle] = useState(task?.title || "Tarefa Detalhada");
+  const previousTitle = useRef(title);
 
   useEffect(() => {
     setItems([
@@ -52,9 +65,36 @@ export default function TaskPage({
   return (
     <div className="flex h-[calc(100vh-56px)] flex-col p-4">
       <div className="w-full max-w-2xl mx-auto mt-12">
-        <h1 className="text-2xl font-bold">
-          {task?.title || "Tarefa Detalhada"}
-        </h1>
+        <Editable
+          value={title}
+          onValueChange={setTitle}
+          onSubmit={() => {
+            if (title.trim() === "") {
+              setTitle(previousTitle.current);
+              return;
+            }
+            setTitle(title);
+            previousTitle.current = title;
+          }}
+        >
+          <EditableArea>
+            <EditablePreview className="!text-2xl font-bold truncate" />
+            <EditableInput />
+          </EditableArea>
+
+          <EditableToolbar>
+            <EditableSubmit asChild>
+              <Button size="sm">Salvar</Button>
+            </EditableSubmit>
+
+            <EditableCancel asChild>
+              <Button variant="outline" size="sm">
+                Cancelar
+              </Button>
+            </EditableCancel>
+          </EditableToolbar>
+        </Editable>
+
         <div className="w-full max-w-xs grid grid-cols-2 gap-4 my-8">
           <div className="flex items-center gap-2 text-muted-foreground">
             <Info size={16} />
