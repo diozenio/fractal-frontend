@@ -52,7 +52,7 @@ export function AddTaskDialog({
           <input
             id="title"
             placeholder="Título da tarefa..."
-            className="!text-lg font-medium p-0 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none"
+            className="!text-lg font-medium placeholder:text-muted-foreground p-0 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none"
             required
           />
           <Textarea
