@@ -7,7 +7,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Task } from "@/core/domain/models/task";
@@ -17,25 +16,13 @@ import { Skeleton } from "@/ui/primitives/skeleton";
 
 import { TaskStatus } from "./task";
 import TasksColumn from "./tasks-column";
+import { StatusIcons } from "./status-icons";
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
   PLANNED: "Planejado",
   TODO: "A Fazer",
   IN_PROGRESS: "Em Progresso",
   DONE: "Feito",
-};
-
-const COLUMN_ICONS: Record<TaskStatus, React.ReactNode> = {
-  PLANNED: <CircleDashed size={16} className="text-muted-foreground/50" />,
-  TODO: <Circle size={16} />,
-  IN_PROGRESS: <CircleDot size={16} className="text-green-500" />,
-  DONE: (
-    <CircleCheck
-      size={20}
-      className="text-background"
-      fill="var(--color-blue-500)"
-    />
-  ),
 };
 
 export default function TasksBoard() {
@@ -108,7 +95,7 @@ export default function TasksBoard() {
               value={columnValue}
               tasks={tasksInColumn}
               count={tasksInColumn.length}
-              icon={COLUMN_ICONS[columnValue as TaskStatus]}
+              icon={StatusIcons[columnValue as TaskStatus]}
             />
           ))}
         </Kanban.Board>

@@ -2,6 +2,7 @@ import { Button } from "@/ui/primitives/button";
 import { Plus } from "lucide-react";
 import Task, { TaskProps, TaskStatus } from "./task";
 import * as Kanban from "@/ui/primitives/kanban";
+import { AddTaskDialog } from "./add-task-dialog";
 
 interface TasksColumnProps
   extends Omit<React.ComponentProps<typeof Kanban.Column>, "children"> {
@@ -33,9 +34,16 @@ export default function TasksColumn({
           <h4 className="text-sm font-medium">{title}</h4>
           <span className="text-sm text-muted-foreground">{count}</span>
         </div>
-        <Button size="icon" variant="ghost" className="h-6 w-6" onClick={onAdd}>
-          <Plus size={14} />
-        </Button>
+        <AddTaskDialog defaultStatus={value as TaskStatus}>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="h-6 w-6"
+            onClick={onAdd}
+          >
+            <Plus size={14} />
+          </Button>
+        </AddTaskDialog>
       </header>
       <div className="flex flex-col gap-2">
         {tasks.map((task) => (

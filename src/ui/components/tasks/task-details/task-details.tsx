@@ -9,21 +9,30 @@ import {
   SelectValue,
 } from "@/ui/primitives/select";
 import { Calendar, Flag, Info } from "lucide-react";
-import { TaskProps } from "@/ui/components/tasks";
+import { StatusIcons, TaskProps } from "@/ui/components/tasks";
+import { useState } from "react";
 
 interface TaskDetailsProps {
   task: TaskProps | null;
 }
 
 export function TaskDetails({ task }: TaskDetailsProps) {
+  const [status, setStatus] = useState<TaskProps["status"]>(
+    task?.status || "PLANNED"
+  );
+
   return (
     <div className="w-full max-w-xs grid grid-cols-2 gap-4 my-8">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Info size={16} />
         Status
       </div>
-      <Select defaultValue={task?.status || "PLANNED"}>
+      <Select
+        value={status}
+        onValueChange={(value) => setStatus(value as TaskProps["status"])}
+      >
         <SelectTrigger className="w-fit" showIcon={false}>
+          {StatusIcons[status]}
           <SelectValue placeholder="Selecione o status" />
         </SelectTrigger>
         <SelectContent>

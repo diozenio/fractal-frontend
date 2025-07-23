@@ -2,8 +2,9 @@
 
 import { useBreadcrumbStore } from "@/store/breadcrumb-store";
 import { TasksBoard } from "@/ui/components/tasks";
+import { AddTaskDialog } from "@/ui/components/tasks";
 import { Button } from "@/ui/primitives/button";
-import { ListFilter } from "lucide-react";
+import { ListFilter, Plus } from "lucide-react";
 import { useEffect } from "react";
 
 export default function Home() {
@@ -15,16 +16,21 @@ export default function Home() {
 
   return (
     <div className="flex h-[calc(100vh-56px)] flex-col">
-      <header className="bg-background flex h-12 items-center justify-between gap-4 border-b px-4">
-        <h3 className="text-sm">Minhas tarefas</h3>
-        <Button
-          size="sm"
-          variant="outline"
-          className="text-xs px-2 py-1.5 h-fit"
-        >
-          <ListFilter />
-          Filtrar
-        </Button>
+      <header className="bg-background flex h-fit items-center justify-between gap-4 px-4 py-4">
+        <h3 className="font-semibold text-lg">Minhas tarefas</h3>
+        <div className="flex items-center gap-2">
+          <Button variant="outline">
+            <ListFilter />
+            Filtrar
+          </Button>
+
+          <AddTaskDialog>
+            <Button className="gap-1">
+              <Plus className="h-4 w-4" />
+              Nova Tarefa
+            </Button>
+          </AddTaskDialog>
+        </div>
       </header>
       <TasksBoard />
     </div>

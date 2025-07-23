@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  Calendar,
-  Circle,
-  CircleCheck,
-  CircleDashed,
-  CircleDot,
-  Flag,
-  LoaderCircle,
-} from "lucide-react";
+import { Calendar, Flag, LoaderCircle } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
 import * as Kanban from "@/ui/primitives/kanban";
+import { StatusIcons } from "./status-icons";
 
 enum PriorityLabels {
   "LOW" = "Baixa",
@@ -20,19 +13,6 @@ enum PriorityLabels {
   "HIGH" = "Alta",
   "URGENT" = "Urgente",
 }
-
-export const StatusIcons = {
-  PLANNED: <CircleDashed size={16} className="text-muted-foreground/50" />,
-  TODO: <Circle size={16} />,
-  IN_PROGRESS: <CircleDot size={16} className="text-green-500" />,
-  DONE: (
-    <CircleCheck
-      size={20}
-      className="text-background"
-      fill="var(--color-blue-500)"
-    />
-  ),
-} as const;
 
 export type TaskStatus = "PLANNED" | "TODO" | "IN_PROGRESS" | "DONE";
 

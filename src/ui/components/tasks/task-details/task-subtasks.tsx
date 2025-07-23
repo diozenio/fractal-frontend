@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/ui/primitives/tooltip";
 import { Button } from "@/ui/primitives/button";
-import { StatusIcons, TaskProps } from "@/ui/components/tasks";
+import { TaskProps, StatusIcons } from "@/ui/components/tasks";
 import { ListTodo, Plus, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
