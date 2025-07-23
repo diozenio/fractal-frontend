@@ -1,6 +1,6 @@
 "use client";
 
-import { useBreadcrumbStore } from "@/stores/breadcrumb-store";
+import { useBreadcrumbStore } from "@/store/breadcrumb-store";
 import { TasksBoard } from "@/ui/components/tasks";
 import { Button } from "@/ui/primitives/button";
 import { ListFilter } from "lucide-react";

@@ -9,7 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/ui/primitives/breadcrumb";
 
-import { useBreadcrumbStore } from "@/stores/breadcrumb-store";
+import { useBreadcrumbStore } from "@/store/breadcrumb-store";
 
 export default function DynamicBreadcrumb() {
   const items = useBreadcrumbStore((state) => state.items);
