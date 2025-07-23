@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/ui/primitives/select";
 import { Textarea } from "@/ui/primitives/textarea";
-import { Calendar, CircleDashed, Flag } from "lucide-react";
+import { Flag } from "lucide-react";
 import React, { useState } from "react";
 import { DatePicker } from "@/ui/components/date-picker";
 import { TaskPriority, TaskStatus } from "./task";
@@ -41,33 +41,33 @@ export function AddTaskDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="max-h-screen my-4 overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Criar Nova Tarefa</DialogTitle>
           <DialogDescription>
             Preencha as informações abaixo para criar uma nova tarefa.
           </DialogDescription>
         </DialogHeader>
-        <form className="flex flex-col gap-4 pt-2 pb-8">
+        <form className="flex flex-col max-md:gap-2 gap-4 pt-2 pb-8 w-full">
           <input
             id="title"
             placeholder="Título da tarefa..."
-            className="!text-lg font-medium placeholder:text-muted-foreground p-0 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none"
+            className="max-w-full max-md:!text-base !text-lg font-medium placeholder:text-muted-foreground p-0 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none"
             required
           />
           <Textarea
             id="description"
             placeholder="Adicione uma descrição mais detalhada..."
-            className="min-h-24 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none !p-0 focus-visible:ring-0"
+            className="max-w-full min-h-24 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none !p-0 focus-visible:ring-0"
           />
-          <div className="flex items-center gap-4">
+          <div className="flex max-md:flex-col items-center gap-4">
             {/* Status Select */}
             <Select
               value={status}
               onValueChange={(value) => setStatus(value as TaskStatus)}
             >
               <SelectTrigger
-                className="w-fit gap-2"
+                className="w-fit gap-2 max-md:w-full"
                 aria-label="Definir status"
               >
                 {StatusIcons[status]}
@@ -84,7 +84,7 @@ export function AddTaskDialog({
             {/* Priority Select */}
             <Select defaultValue={defaultPriority}>
               <SelectTrigger
-                className="w-fit gap-2"
+                className="w-fit gap-2 max-md:w-full"
                 aria-label="Definir prioridade"
               >
                 <Flag size={16} />
