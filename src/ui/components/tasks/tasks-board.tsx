@@ -1,15 +1,22 @@
-import { TaskStatus } from "./task";
-import * as Kanban from "@/ui/primitives/kanban";
-import TasksColumn from "./tasks-column";
-import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
+"use client";
+
 import {
-  useSensor,
-  useSensors,
+  KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  KeyboardSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
+import { Circle, CircleCheck, CircleDashed, CircleDot } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { Task } from "@/core/domain/models/task";
 import { useTasksList } from "@/hooks/tasks/useTasksList";
+import * as Kanban from "@/ui/primitives/kanban";
+import { Skeleton } from "@/ui/primitives/skeleton";
+
+import { TaskStatus } from "./task";
+import TasksColumn from "./tasks-column";
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
   PLANNED: "Planejado",
@@ -32,7 +39,31 @@ const COLUMN_ICONS: Record<TaskStatus, React.ReactNode> = {
 };
 
 export default function TasksBoard() {
-  const { columns, setColumns } = useTasksList();
+  const { tasks, isLoading } = useTasksList();
+  const [columns, setColumns] = useState<Record<TaskStatus, Task[]>>({
+    PLANNED: [],
+    TODO: [],
+    IN_PROGRESS: [],
+    DONE: [],
+  });
+
+  useEffect(() => {
+    if (!isLoading) {
+      const newColumns: Record<TaskStatus, Task[]> = {
+        PLANNED: [],
+        TODO: [],
+        IN_PROGRESS: [],
+        DONE: [],
+      };
+
+      tasks.forEach((task) => {
+        if (task.status && task.status in newColumns) {
+          newColumns[task.status].push(task);
+        }
+      });
+      setColumns(newColumns);
+    }
+  }, [tasks, isLoading]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -44,6 +75,23 @@ export default function TasksBoard() {
     useSensor(KeyboardSensor)
   );
 
+  if (isLoading) {
+    return (
+      <div className="flex-1 overflow-x-auto pb-4">
+        <div className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">
+          {Object.keys(columns).map((key) => (
+            <div key={key} className="space-y-3">
+              <Skeleton className="h-5 w-2/5" />
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 overflow-x-auto pb-4">
       <Kanban.Root
@@ -53,13 +101,13 @@ export default function TasksBoard() {
         sensors={sensors}
       >
         <Kanban.Board className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">
-          {Object.entries(columns).map(([columnValue, tasks]) => (
+          {Object.entries(columns).map(([columnValue, tasksInColumn]) => (
             <TasksColumn
               key={columnValue}
               title={COLUMN_TITLES[columnValue as TaskStatus]}
               value={columnValue}
-              tasks={tasks}
-              count={tasks.length}
+              tasks={tasksInColumn}
+              count={tasksInColumn.length}
               icon={COLUMN_ICONS[columnValue as TaskStatus]}
             />
           ))}

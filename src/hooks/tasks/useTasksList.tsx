@@ -1,39 +1,24 @@
-import { tasks, TaskStatus } from "@/ui/components/tasks";
-import { TaskProps } from "@/ui/components/tasks";
-import { useEffect, useState } from "react";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { services } from "@/container";
+import { TaskListResponse } from "@/core/domain/models/task";
 
 export function useTasksList() {
-  const [columns, setColumns] = useState<Record<TaskStatus, TaskProps[]>>({
-    PLANNED: [],
-    TODO: [],
-    IN_PROGRESS: [],
-    DONE: [],
+  const {
+    data: tasksResponse,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<TaskListResponse>({
+    queryKey: ["tasks"],
+    queryFn: () => services.TaskService.getTasks(),
   });
 
-  useEffect(() => {
-    // Initialize columns with tasks data
-    const initialColumns: Record<TaskStatus, TaskProps[]> = {
-      PLANNED: [],
-      TODO: [],
-      IN_PROGRESS: [],
-      DONE: [],
-    };
-
-    tasks.map((task) => {
-      if (task.status && task.status in initialColumns) {
-        initialColumns[task.status].push(task);
-      } else {
-        console.warn(
-          `Task with id ${task.id} has an invalid status: ${task.status}`
-        );
-      }
-    });
-
-    setColumns(initialColumns);
-  }, []);
-
   return {
-    columns,
-    setColumns,
+    tasks: tasksResponse?.data ?? [],
+    isLoading,
+    isError,
+    error,
   };
 }
