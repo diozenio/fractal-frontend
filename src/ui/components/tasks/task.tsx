@@ -26,7 +26,6 @@ export default function Task({
   priority,
   status = "PLANNED",
   subtasks,
-  createdAt,
   ...props
 }: TaskProps) {
   const router = useRouter();
