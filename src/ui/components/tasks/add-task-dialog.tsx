@@ -76,7 +76,7 @@ export function AddTaskDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-h-screen my-4 overflow-y-auto overflow-x-hidden">
+      <DialogContent className="md:min-w-xl max-h-screen my-4 overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle>Criar Nova Tarefa</DialogTitle>
           <DialogDescription>
