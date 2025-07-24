@@ -16,12 +16,20 @@ import { Calendar } from "@/ui/primitives/calendar";
 
 interface DatePickerProps {
   defaultDate?: string | null;
+  onDateChange?: (date: Date | undefined) => void;
 }
 
-export function DatePicker({ defaultDate }: DatePickerProps) {
+export function DatePicker({ defaultDate, onDateChange }: DatePickerProps) {
   const [date, setDate] = React.useState<Date | undefined>(
     defaultDate ? new Date(defaultDate) : undefined
   );
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    if (onDateChange) {
+      onDateChange(selectedDate);
+    }
+  };
 
   return (
     <Popover>
@@ -49,7 +57,7 @@ export function DatePicker({ defaultDate }: DatePickerProps) {
               date.toLocaleString("pt-BR", { weekday: "narrow", ...options }),
           }}
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateSelect}
         />
       </PopoverContent>
     </Popover>

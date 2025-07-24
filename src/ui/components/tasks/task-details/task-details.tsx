@@ -10,7 +10,9 @@ import {
 } from "@/ui/primitives/select";
 import { Calendar, Flag, Info } from "lucide-react";
 import { StatusIcons, TaskProps } from "@/ui/components/tasks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTaskStore } from "@/store/task-store";
+import { TaskPriority, TaskStatus } from "@/core/domain/models/task";
 
 interface TaskDetailsProps {
   task: TaskProps | null;
@@ -20,6 +22,30 @@ export function TaskDetails({ task }: TaskDetailsProps) {
   const [status, setStatus] = useState<TaskProps["status"]>(
     task?.status || "PLANNED"
   );
+  const { updateTask } = useTaskStore();
+
+  useEffect(() => {
+    setStatus(task?.status || "PLANNED");
+  }, [task?.status]);
+
+  const handleStatusChange = (newStatus: TaskStatus) => {
+    setStatus(newStatus);
+    if (task) {
+      updateTask(task.id, { status: newStatus });
+    }
+  };
+
+  const handlePriorityChange = (newPriority: TaskPriority) => {
+    if (task) {
+      updateTask(task.id, { priority: newPriority });
+    }
+  };
+
+  const handleDateChange = (newDate: Date | undefined) => {
+    if (task && newDate) {
+      updateTask(task.id, { dueDate: newDate.toISOString() });
+    }
+  };
 
   return (
     <div className="w-full max-w-xs grid grid-cols-2 gap-4 my-8">
@@ -27,10 +53,7 @@ export function TaskDetails({ task }: TaskDetailsProps) {
         <Info size={16} />
         Status
       </div>
-      <Select
-        value={status}
-        onValueChange={(value) => setStatus(value as TaskProps["status"])}
-      >
+      <Select value={status} onValueChange={handleStatusChange}>
         <SelectTrigger className="w-fit" showIcon={false}>
           {StatusIcons[status]}
           <SelectValue placeholder="Selecione o status" />
@@ -46,12 +69,15 @@ export function TaskDetails({ task }: TaskDetailsProps) {
         <Calendar size={16} />
         Prazo
       </div>
-      <DatePicker defaultDate={task?.dueDate} />
+      <DatePicker defaultDate={task?.dueDate} onDateChange={handleDateChange} />
       <div className="flex items-center gap-2 text-muted-foreground">
         <Flag size={16} />
         Prioridade
       </div>
-      <Select defaultValue={task?.priority}>
+      <Select
+        defaultValue={task?.priority}
+        onValueChange={handlePriorityChange}
+      >
         <SelectTrigger className="w-fit" showIcon={false}>
           <SelectValue placeholder="Selecione a prioridade" />
         </SelectTrigger>

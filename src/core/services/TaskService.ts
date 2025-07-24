@@ -18,7 +18,7 @@ export default class TaskService extends TaskUseCase {
     return this.adapter.createTask(task);
   }
 
-  async updateTask(id: string, task: TaskDTO): Promise<TaskResponse> {
+  async updateTask(id: string, task: Partial<TaskDTO>): Promise<TaskResponse> {
     return this.adapter.updateTask(id, task);
   }
 

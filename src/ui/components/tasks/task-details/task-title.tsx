@@ -11,6 +11,7 @@ import {
 } from "@/ui/primitives/editable";
 import { Button } from "@/ui/primitives/button";
 import { useState, useRef, useEffect } from "react";
+import { useTaskStore } from "@/store/task-store";
 
 interface TaskTitleProps {
   initialTitle: string;
@@ -19,6 +20,7 @@ interface TaskTitleProps {
 export function TaskTitle({ initialTitle }: TaskTitleProps) {
   const [title, setTitle] = useState(initialTitle);
   const previousTitle = useRef(title);
+  const { updateTask, currentTask } = useTaskStore();
 
   useEffect(() => {
     setTitle(initialTitle);
@@ -31,7 +33,9 @@ export function TaskTitle({ initialTitle }: TaskTitleProps) {
       return;
     }
 
-    // Save the operation here
+    if (currentTask) {
+      updateTask(currentTask.id, { title });
+    }
 
     previousTitle.current = title;
   };

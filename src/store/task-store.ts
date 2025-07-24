@@ -11,6 +11,7 @@ interface TaskState {
   fetchTasks: () => Promise<void>;
   fetchTaskById: (id: string) => Promise<void>;
   createTask: (task: TaskDTO) => Promise<void>;
+  updateTask: (id: string, task: Partial<TaskDTO>) => Promise<void>; // Adicionado
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -49,6 +50,26 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       set({ isLoading: false, isError: true, error: error as Error });
     } finally {
       set({ isLoading: false });
+    }
+  },
+  updateTask: async (id: string, task: Partial<TaskDTO>) => {
+    try {
+      const taskToUpdate =
+        get().currentTask || get().tasks.find((t) => t.id === id);
+
+      console.log("Updating task:", id, task, taskToUpdate);
+
+      if (taskToUpdate) {
+        const updatedTask = { ...taskToUpdate, ...task };
+        if (get().currentTask?.id === id) {
+          set({ currentTask: updatedTask });
+        }
+
+        await services.TaskService.updateTask(id, updatedTask);
+        await get().fetchTasks();
+      }
+    } catch (error) {
+      set({ isError: true, error: error as Error });
     }
   },
 }));

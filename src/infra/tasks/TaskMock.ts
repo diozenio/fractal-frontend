@@ -70,7 +70,7 @@ export default class TaskMock extends TaskAdapter {
     });
   }
 
-  async updateTask(id: string, task: TaskDTO): Promise<TaskResponse> {
+  async updateTask(id: string, task: Partial<TaskDTO>): Promise<TaskResponse> {
     await delay(500);
     const existingTask = searchById(tasks, id);
 

@@ -25,8 +25,8 @@ export default class TaskAPI extends TaskAdapter {
     return data;
   }
 
-  async updateTask(id: string, task: TaskDTO): Promise<TaskResponse> {
-    const { data } = await client.put<TaskResponse>(`/task/${id}`, task);
+  async updateTask(id: string, task: Partial<TaskDTO>): Promise<TaskResponse> {
+    const { data } = await client.patch<TaskResponse>(`/task/${id}`, task);
 
     return data;
   }
