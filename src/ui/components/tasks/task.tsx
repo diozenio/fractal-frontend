@@ -14,7 +14,7 @@ enum PriorityLabels {
   "URGENT" = "Urgente",
 }
 
-export type TaskStatus = "PLANNED" | "TODO" | "IN_PROGRESS" | "DONE";
+export type TaskStatus = "PLANNED" | "TO_DO" | "IN_PROGRESS" | "DONE";
 
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 

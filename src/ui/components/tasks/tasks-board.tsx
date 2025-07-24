@@ -20,7 +20,7 @@ import { StatusIcons } from "./status-icons";
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
   PLANNED: "Planejado",
-  TODO: "A Fazer",
+  TO_DO: "A Fazer",
   IN_PROGRESS: "Em Progresso",
   DONE: "Feito",
 };
@@ -29,7 +29,7 @@ export default function TasksBoard() {
   const { tasks, isLoading } = useTasksList();
   const [columns, setColumns] = useState<Record<TaskStatus, Task[]>>({
     PLANNED: [],
-    TODO: [],
+    TO_DO: [],
     IN_PROGRESS: [],
     DONE: [],
   });
@@ -38,7 +38,7 @@ export default function TasksBoard() {
     if (!isLoading) {
       const newColumns: Record<TaskStatus, Task[]> = {
         PLANNED: [],
-        TODO: [],
+        TO_DO: [],
         IN_PROGRESS: [],
         DONE: [],
       };

@@ -123,19 +123,19 @@ export const tasks: TaskProps[] = [
     title: "Conectar frontend com backend",
     description: "Integração básica utilizando fetch/axios.",
     priority: "HIGH",
-    status: "TODO",
+    status: "TO_DO",
   },
   {
     id: "13",
     title: "Ajustar responsividade",
     dueDate: "2023-10-30T00:00:00Z",
     priority: "MEDIUM",
-    status: "TODO",
+    status: "TO_DO",
   },
   {
     id: "14",
     title: "Revisar nomenclatura de variáveis",
-    status: "TODO",
+    status: "TO_DO",
   },
   {
     id: "15",

@@ -75,7 +75,7 @@ export function AddTaskDialog({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="PLANNED">Planejado</SelectItem>
-                <SelectItem value="TODO">A Fazer</SelectItem>
+                <SelectItem value="TO_DO">A Fazer</SelectItem>
                 <SelectItem value="IN_PROGRESS">Em Progresso</SelectItem>
                 <SelectItem value="DONE">Feito</SelectItem>
               </SelectContent>
