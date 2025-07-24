@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  DragEndEvent,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
@@ -25,7 +26,7 @@ const COLUMN_TITLES: Record<TaskStatus, string> = {
 };
 
 export default function TasksBoard() {
-  const { tasks, isLoading, fetchTasks } = useTaskStore();
+  const { tasks, isLoading, fetchTasks, updateTaskStatus } = useTaskStore();
   const [columns, setColumns] = useState<Record<TaskStatus, Task[]>>({
     PLANNED: [],
     TO_DO: [],
@@ -84,12 +85,33 @@ export default function TasksBoard() {
     );
   }
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active } = event;
+
+    const activeId = active.id as string;
+
+    const previousStatus = tasks.find((task) => task.id === activeId)?.status;
+
+    const currentColumn = Object.keys(columns).find((key) =>
+      columns[key as TaskStatus].some((task) => task.id === activeId)
+    );
+
+    if (!currentColumn || !previousStatus || currentColumn === previousStatus) {
+      return;
+    }
+
+    const newStatus = currentColumn as TaskStatus;
+
+    updateTaskStatus(activeId, newStatus);
+  };
+
   return (
     <div className="flex-1 overflow-x-auto pb-4">
       <Kanban.Root
         value={columns}
         onValueChange={setColumns}
         getItemValue={(item) => item.id}
+        onDragEnd={handleDragEnd}
         sensors={sensors}
       >
         <Kanban.Board className="w-full grid grid-flow-col auto-cols-[minmax(300px,_1fr)] h-full p-4 gap-4">

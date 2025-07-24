@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { services } from "@/container";
-import { Task, TaskDTO } from "@/core/domain/models/task";
+import { Task, TaskDTO, TaskStatus } from "@/core/domain/models/task";
 
 interface TaskState {
   tasks: Task[];
@@ -11,7 +11,8 @@ interface TaskState {
   fetchTasks: () => Promise<void>;
   fetchTaskById: (id: string) => Promise<void>;
   createTask: (task: TaskDTO) => Promise<void>;
-  updateTask: (id: string, task: Partial<TaskDTO>) => Promise<void>; // Adicionado
+  updateTask: (id: string, task: Partial<TaskDTO>) => Promise<void>;
+  updateTaskStatus: (id: string, status: TaskStatus) => Promise<void>; // Adicionado
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -55,21 +56,34 @@ export const useTaskStore = create<TaskState>((set, get) => ({
   updateTask: async (id: string, task: Partial<TaskDTO>) => {
     try {
       const taskToUpdate =
-        get().currentTask || get().tasks.find((t) => t.id === id);
-
-      console.log("Updating task:", id, task, taskToUpdate);
+        get().tasks.find((t) => t.id === id) || get().currentTask;
 
       if (taskToUpdate) {
         const updatedTask = { ...taskToUpdate, ...task };
         if (get().currentTask?.id === id) {
           set({ currentTask: updatedTask });
         }
+        set((state) => ({
+          tasks: state.tasks.map((t) => (t.id === id ? updatedTask : t)),
+        }));
 
         await services.TaskService.updateTask(id, updatedTask);
-        await get().fetchTasks();
       }
     } catch (error) {
       set({ isError: true, error: error as Error });
+    }
+  },
+  updateTaskStatus: async (id: string, status: TaskStatus) => {
+    const originalTasks = get().tasks;
+    const updatedTasks = originalTasks.map((task) =>
+      task.id === id ? { ...task, status } : task
+    );
+    set({ tasks: updatedTasks });
+
+    try {
+      await services.TaskService.updateTask(id, { status });
+    } catch (error) {
+      set({ tasks: originalTasks, isError: true, error: error as Error });
     }
   },
 }));
