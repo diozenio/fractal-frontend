@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { Task, TaskStatus } from "@/core/domain/models/task";
-import { useTasksList } from "@/hooks/tasks/useTasksList";
+import { useTaskStore } from "@/store/task-store";
 import * as Kanban from "@/ui/primitives/kanban";
 import { Skeleton } from "@/ui/primitives/skeleton";
 
@@ -25,13 +25,17 @@ const COLUMN_TITLES: Record<TaskStatus, string> = {
 };
 
 export default function TasksBoard() {
-  const { tasks, isLoading } = useTasksList();
+  const { tasks, isLoading, fetchTasks } = useTaskStore();
   const [columns, setColumns] = useState<Record<TaskStatus, Task[]>>({
     PLANNED: [],
     TO_DO: [],
     IN_PROGRESS: [],
     DONE: [],
   });
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   useEffect(() => {
     if (!isLoading) {

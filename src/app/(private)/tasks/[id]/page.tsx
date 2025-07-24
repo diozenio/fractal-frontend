@@ -1,7 +1,7 @@
 "use client";
 
-import { useTask } from "@/hooks/tasks/useTask";
 import { useBreadcrumbStore } from "@/store/breadcrumb-store";
+import { useTaskStore } from "@/store/task-store";
 import {
   TaskTitle,
   TaskDetails,
@@ -16,7 +16,11 @@ export default function TaskPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { task } = useTask(id);
+  const { currentTask: task, fetchTaskById } = useTaskStore();
+
+  useEffect(() => {
+    fetchTaskById(id);
+  }, [fetchTaskById, id]);
 
   const setItems = useBreadcrumbStore((s) => s.setItems);
 
