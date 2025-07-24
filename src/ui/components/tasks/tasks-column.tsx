@@ -48,7 +48,7 @@ export default function TasksColumn({
       </header>
       <div className="flex flex-col gap-2">
         {tasks.map((task) => (
-          <Task key={task.id} {...task} status={value as TaskStatus} asHandle />
+          <Task key={task.id} {...task} status={value as TaskStatus} />
         ))}
       </div>
     </Kanban.Column>

@@ -26,11 +26,10 @@ export default function Task({
   priority,
   status = "PLANNED",
   subtasks,
-  ...props
 }: TaskProps) {
   const router = useRouter();
   return (
-    <Kanban.Item key={id} value={id} asChild {...props}>
+    <Kanban.Item key={id} value={id} asChild asHandle>
       <div
         onClick={(e) => {
           e.stopPropagation();
