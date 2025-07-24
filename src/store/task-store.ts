@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { services } from "@/container";
-import { Task } from "@/core/domain/models/task";
+import { Task, TaskDTO } from "@/core/domain/models/task";
 
 interface TaskState {
   tasks: Task[];
@@ -10,9 +10,10 @@ interface TaskState {
   error: Error | null;
   fetchTasks: () => Promise<void>;
   fetchTaskById: (id: string) => Promise<void>;
+  createTask: (task: TaskDTO) => Promise<void>;
 }
 
-export const useTaskStore = create<TaskState>((set) => ({
+export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
   currentTask: null,
   isLoading: false,
@@ -34,6 +35,17 @@ export const useTaskStore = create<TaskState>((set) => ({
       set({ currentTask: response.data || null, isLoading: false });
     } catch (error) {
       set({ isLoading: false, isError: true, error: error as Error });
+    }
+  },
+  createTask: async (task: TaskDTO) => {
+    set({ isLoading: true, isError: false, error: null });
+    try {
+      await services.TaskService.createTask(task);
+      await get().fetchTasks();
+    } catch (error) {
+      set({ isLoading: false, isError: true, error: error as Error });
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));

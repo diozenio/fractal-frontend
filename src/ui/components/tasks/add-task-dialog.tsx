@@ -23,7 +23,7 @@ import { Flag } from "lucide-react";
 import React, { useState } from "react";
 import { DatePicker } from "@/ui/components/date-picker";
 import { StatusIcons } from "./status-icons";
-import { useCreateTask } from "@/hooks/tasks/useCreateTask";
+import { useTaskStore } from "@/store/task-store";
 import { TaskDTO, TaskPriority, TaskStatus } from "@/core/domain/models/task";
 
 interface AddTaskDialogProps {
@@ -38,15 +38,20 @@ export function AddTaskDialog({
   defaultPriority = "MEDIUM",
 }: AddTaskDialogProps) {
   const [status, setStatus] = useState<TaskStatus>(defaultStatus);
+  const { createTask, isLoading } = useTaskStore();
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const [open, setOpen] = useState(false);
 
-  const { createTask, isLoading } = useCreateTask();
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
+  function handleSubmit() {
+    const formData = new FormData(formRef.current!);
 
     const title = formData.get("title") as string;
+
+    if (!title.trim()) {
+      formRef.current?.reportValidity();
+      return;
+    }
+
     const description = formData.get("description") as string;
     const status = formData.get("status") as TaskStatus;
     const priority = formData.get("priority") as TaskPriority;
@@ -62,10 +67,11 @@ export function AddTaskDialog({
     };
 
     createTask(newTask);
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-h-screen my-4 overflow-y-auto overflow-x-hidden">
         <DialogHeader>
@@ -75,7 +81,7 @@ export function AddTaskDialog({
           </DialogDescription>
         </DialogHeader>
         <form
-          onSubmit={handleSubmit}
+          ref={formRef}
           className="flex flex-col max-md:gap-2 gap-4 pt-2 pb-8 w-full"
         >
           <input
@@ -138,7 +144,13 @@ export function AddTaskDialog({
           <Button type="button" variant="outline">
             Salvar Template
           </Button>
-          <Button type="submit">Criar Tarefa</Button>
+          <Button
+            className="min-w-[120px]"
+            onClick={handleSubmit}
+            loading={isLoading}
+          >
+            Criar Tarefa
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
