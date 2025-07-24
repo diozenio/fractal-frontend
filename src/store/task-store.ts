@@ -12,7 +12,9 @@ interface TaskState {
   fetchTaskById: (id: string) => Promise<void>;
   createTask: (task: TaskDTO) => Promise<void>;
   updateTask: (id: string, task: Partial<TaskDTO>) => Promise<void>;
-  updateTaskStatus: (id: string, status: TaskStatus) => Promise<void>; // Adicionado
+  updateTaskStatus: (id: string, status: TaskStatus) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
+  deleteSubtask: (parentId: string, subtaskId: string) => Promise<void>;
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -84,6 +86,37 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       await services.TaskService.updateTask(id, { status });
     } catch (error) {
       set({ tasks: originalTasks, isError: true, error: error as Error });
+    }
+  },
+  deleteTask: async (id: string) => {
+    try {
+      await services.TaskService.deleteTask(id);
+      set((state) => ({
+        tasks: state.tasks.filter((t) => t.id !== id),
+        currentTask: state.currentTask?.id === id ? null : state.currentTask,
+      }));
+    } catch (error) {
+      set({ isError: true, error: error as Error });
+    }
+  },
+  deleteSubtask: async (parentId: string, subtaskId: string) => {
+    try {
+      await services.TaskService.deleteTask(subtaskId);
+      set((state) => ({
+        tasks: state.tasks.filter((t) => t.id !== subtaskId),
+        currentTask:
+          state.currentTask?.id === parentId
+            ? {
+                ...state.currentTask,
+                subtasks:
+                  state.currentTask.subtasks?.filter(
+                    (subtask) => subtask.id !== subtaskId
+                  ) || null,
+              }
+            : state.currentTask,
+      }));
+    } catch (error) {
+      set({ isError: true, error: error as Error });
     }
   },
 }));
