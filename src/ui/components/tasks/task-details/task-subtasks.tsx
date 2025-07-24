@@ -6,15 +6,16 @@ import {
   TooltipTrigger,
 } from "@/ui/primitives/tooltip";
 import { Button } from "@/ui/primitives/button";
-import { TaskProps, StatusIcons } from "@/ui/components/tasks";
+import { TaskProps, StatusIcons, AddTaskDialog } from "@/ui/components/tasks";
 import { ListTodo, Plus, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface TaskSubtasksProps {
+  parentId?: string;
   subtasks: TaskProps["subtasks"];
 }
 
-export function TaskSubtasks({ subtasks }: TaskSubtasksProps) {
+export function TaskSubtasks({ subtasks, parentId }: TaskSubtasksProps) {
   const router = useRouter();
 
   return (
@@ -22,13 +23,15 @@ export function TaskSubtasks({ subtasks }: TaskSubtasksProps) {
       <div className="flex items-center gap-2 ">
         <ListTodo size={16} />
         Subtarefas
-        <Button
-          variant="ghost"
-          size={"icon"}
-          className="size-6 group-hover/subtasks:flex group-hover/subtasks:opacity-100 transition-opacity duration-300 ease-in-out opacity-0"
-        >
-          <Plus size={16} />
-        </Button>
+        <AddTaskDialog parentId={parentId}>
+          <Button
+            variant="ghost"
+            size={"icon"}
+            className="size-6 group-hover/subtasks:flex group-hover/subtasks:opacity-100 transition-opacity duration-300 ease-in-out opacity-0"
+          >
+            <Plus size={16} />
+          </Button>
+        </AddTaskDialog>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="secondary" size="icon" className="ml-auto">

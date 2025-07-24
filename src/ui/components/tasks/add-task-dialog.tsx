@@ -30,12 +30,14 @@ interface AddTaskDialogProps {
   children: React.ReactNode;
   defaultStatus?: TaskStatus;
   defaultPriority?: TaskPriority;
+  parentId?: string;
 }
 
 export function AddTaskDialog({
   children,
   defaultStatus = "PLANNED",
   defaultPriority = "MEDIUM",
+  parentId,
 }: AddTaskDialogProps) {
   const [status, setStatus] = useState<TaskStatus>(defaultStatus);
   const { createTask, isLoading } = useTaskStore();
@@ -64,6 +66,7 @@ export function AddTaskDialog({
       priority,
       dueDate,
       subtasks: [],
+      parentId: parentId || null,
     };
 
     createTask(newTask);

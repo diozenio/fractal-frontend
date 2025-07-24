@@ -38,7 +38,7 @@ export default function TaskPage({
         <TaskTitle initialTitle={task?.title || "Tarefa Detalhada"} />
         <TaskDetails task={task} />
         <TaskDescription description={task?.description} />
-        <TaskSubtasks subtasks={task?.subtasks} />
+        <TaskSubtasks subtasks={task?.subtasks} parentId={task?.id} />
       </div>
     </div>
   );

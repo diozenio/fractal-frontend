@@ -42,6 +42,9 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     try {
       await services.TaskService.createTask(task);
       await get().fetchTasks();
+      if (task.parentId) {
+        await get().fetchTaskById(task.parentId);
+      }
     } catch (error) {
       set({ isLoading: false, isError: true, error: error as Error });
     } finally {

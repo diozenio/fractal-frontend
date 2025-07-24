@@ -66,7 +66,7 @@ export default function Task({
                 <span className="text-xs">{PriorityLabels[priority]}</span>
               </div>
             )}
-            {subtasks && (
+            {subtasks && subtasks.length > 0 && (
               <div className="h-6 px-1.5 aspect-square flex items-center gap-1 bg-muted/25 rounded border border-muted/50 text-muted-foreground">
                 <LoaderCircle size={14} />
                 <span className="text-xs">

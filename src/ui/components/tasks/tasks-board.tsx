@@ -48,7 +48,9 @@ export default function TasksBoard() {
 
       tasks.forEach((task) => {
         if (task.status && task.status in newColumns) {
-          newColumns[task.status].push(task);
+          if (!task.parentId) {
+            newColumns[task.status].push(task);
+          }
         }
       });
       setColumns(newColumns);
