@@ -1,5 +1,4 @@
 import { ApiResponse } from "@/core/domain/types/ApiResponse";
-import { TaskProps } from "@/ui/components/tasks";
 
 export type TaskStatus = "PLANNED" | "TO_DO" | "IN_PROGRESS" | "DONE";
 
@@ -12,7 +11,8 @@ export type Task = {
   dueDate?: string | null;
   priority?: TaskPriority;
   status: TaskStatus;
-  subtasks?: TaskProps[] | null;
+  parentId?: string | null;
+  subtasks?: Task[] | null;
   createdAt?: string;
   updatedAt?: string;
 };

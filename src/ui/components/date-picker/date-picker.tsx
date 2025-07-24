@@ -15,7 +15,7 @@ import {
 import { Calendar } from "@/ui/primitives/calendar";
 
 interface DatePickerProps {
-  defaultDate?: string;
+  defaultDate?: string | null;
 }
 
 export function DatePicker({ defaultDate }: DatePickerProps) {
