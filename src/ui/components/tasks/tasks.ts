@@ -1,6 +1,6 @@
-import { TaskProps } from "@/ui/components/tasks";
+import { Task } from "@/core/domain/models/task";
 
-export const tasks: TaskProps[] = [
+export const tasks: Task[] = [
   {
     id: "1",
     title: "Criar tipagem do retorno da API de tarefas",

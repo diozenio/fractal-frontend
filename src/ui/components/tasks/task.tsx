@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import * as Kanban from "@/ui/primitives/kanban";
 import { StatusIcons } from "./status-icons";
+import { Task as TaskModel } from "@/core/domain/models/task";
 
 enum PriorityLabels {
   "LOW" = "Baixa",
@@ -14,20 +15,8 @@ enum PriorityLabels {
   "URGENT" = "Urgente",
 }
 
-export type TaskStatus = "PLANNED" | "TO_DO" | "IN_PROGRESS" | "DONE";
-
-export type TaskPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-
-export interface TaskProps
-  extends Omit<React.ComponentProps<typeof Kanban.Item>, "value"> {
-  id: string;
-  title: string;
-  description?: string;
-  dueDate?: string;
-  priority?: TaskPriority;
-  status: TaskStatus;
-  subtasks?: TaskProps[];
-}
+export type TaskProps = TaskModel &
+  Omit<React.ComponentProps<typeof Kanban.Item>, "value">;
 
 export default function Task({
   id,
@@ -37,6 +26,7 @@ export default function Task({
   priority,
   status = "PLANNED",
   subtasks,
+  createdAt,
   ...props
 }: TaskProps) {
   const router = useRouter();

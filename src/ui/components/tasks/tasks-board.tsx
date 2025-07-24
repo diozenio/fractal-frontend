@@ -9,12 +9,11 @@ import {
 } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 
-import { Task } from "@/core/domain/models/task";
+import { Task, TaskStatus } from "@/core/domain/models/task";
 import { useTasksList } from "@/hooks/tasks/useTasksList";
 import * as Kanban from "@/ui/primitives/kanban";
 import { Skeleton } from "@/ui/primitives/skeleton";
 
-import { TaskStatus } from "./task";
 import TasksColumn from "./tasks-column";
 import { StatusIcons } from "./status-icons";
 
