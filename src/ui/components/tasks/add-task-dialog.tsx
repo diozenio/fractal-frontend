@@ -22,8 +22,9 @@ import { Textarea } from "@/ui/primitives/textarea";
 import { Flag } from "lucide-react";
 import React, { useState } from "react";
 import { DatePicker } from "@/ui/components/date-picker";
-import { TaskPriority, TaskStatus } from "./task";
 import { StatusIcons } from "./status-icons";
+import { useCreateTask } from "@/hooks/tasks/useCreateTask";
+import { TaskDTO, TaskPriority, TaskStatus } from "@/core/domain/models/task";
 
 interface AddTaskDialogProps {
   children: React.ReactNode;
@@ -38,6 +39,31 @@ export function AddTaskDialog({
 }: AddTaskDialogProps) {
   const [status, setStatus] = useState<TaskStatus>(defaultStatus);
 
+  const { createTask, isLoading } = useCreateTask();
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const status = formData.get("status") as TaskStatus;
+    const priority = formData.get("priority") as TaskPriority;
+    const dueDate = formData.get("dueDate") as string;
+
+    const newTask: TaskDTO = {
+      title,
+      description: description.trim() || null,
+      status,
+      priority,
+      dueDate,
+      subtasks: [],
+    };
+
+    createTask(newTask);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -48,21 +74,27 @@ export function AddTaskDialog({
             Preencha as informações abaixo para criar uma nova tarefa.
           </DialogDescription>
         </DialogHeader>
-        <form className="flex flex-col max-md:gap-2 gap-4 pt-2 pb-8 w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col max-md:gap-2 gap-4 pt-2 pb-8 w-full"
+        >
           <input
             id="title"
+            name="title"
             placeholder="Título da tarefa..."
             className="max-w-full max-md:!text-base !text-lg font-medium placeholder:text-muted-foreground p-0 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none"
             required
           />
           <Textarea
             id="description"
+            name="description"
             placeholder="Adicione uma descrição mais detalhada..."
             className="max-w-full min-h-24 !bg-transparent !border-none !focus:ring-none !outline-none !focus:border-none !p-0 focus-visible:ring-0"
           />
           <div className="flex max-md:flex-col items-center gap-4">
             {/* Status Select */}
             <Select
+              name="status"
               value={status}
               onValueChange={(value) => setStatus(value as TaskStatus)}
             >
@@ -82,7 +114,7 @@ export function AddTaskDialog({
             </Select>
 
             {/* Priority Select */}
-            <Select defaultValue={defaultPriority}>
+            <Select name="priority" defaultValue={defaultPriority}>
               <SelectTrigger
                 className="w-fit gap-2 max-md:w-full"
                 aria-label="Definir prioridade"
