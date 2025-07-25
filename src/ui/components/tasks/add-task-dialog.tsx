@@ -40,9 +40,14 @@ export function AddTaskDialog({
   parentId,
 }: AddTaskDialogProps) {
   const [status, setStatus] = useState<TaskStatus>(defaultStatus);
+  const [dueDate, setDueDate] = useState<Date | null>(null);
   const { createTask, isLoading } = useTaskStore();
   const formRef = React.useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
+
+  function handleDateChange(date: Date | undefined) {
+    setDueDate(date || null);
+  }
 
   function handleSubmit() {
     const formData = new FormData(formRef.current!);
@@ -57,14 +62,13 @@ export function AddTaskDialog({
     const description = formData.get("description") as string;
     const status = formData.get("status") as TaskStatus;
     const priority = formData.get("priority") as TaskPriority;
-    const dueDate = formData.get("dueDate") as string;
 
     const newTask: TaskDTO = {
       title,
       description: description.trim() || null,
       status,
       priority,
-      dueDate,
+      dueDate: dueDate?.toISOString() || null,
       subtasks: [],
       parentId: parentId || null,
     };
@@ -140,7 +144,7 @@ export function AddTaskDialog({
             </Select>
 
             {/* Date Picker */}
-            <DatePicker />
+            <DatePicker onDateChange={handleDateChange} />
           </div>
         </form>
         <DialogFooter>
