@@ -33,7 +33,7 @@ export default function TaskPage({
   }, [setItems, task?.title]);
 
   return (
-    <div className="flex h-[calc(100vh-56px)] flex-col p-4">
+    <div className="flex h-[calc(100vh-56px)] flex-col p-4 overflow-y-auto">
       <div className="w-full max-w-2xl mx-auto mt-12">
         <TaskTitle
           isLoading={isLoading}
