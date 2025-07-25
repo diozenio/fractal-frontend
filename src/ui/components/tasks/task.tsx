@@ -93,7 +93,12 @@ export default function Task({
             )}
           </ContextMenuTrigger>
           <ContextMenuContent className="w-fit">
-            <ContextMenuItem onClick={() => deleteTask(id)}>
+            <ContextMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTask(id);
+              }}
+            >
               <Trash className="ml-auto" />
               Deletar tarefa
             </ContextMenuItem>

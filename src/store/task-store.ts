@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { services } from "@/container";
 import { Task, TaskDTO, TaskStatus } from "@/core/domain/models/task";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 interface TaskState {
   tasks: Task[];
@@ -30,6 +32,16 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       set({ tasks: response.data || [], isLoading: false });
     } catch (error) {
       set({ isLoading: false, isError: true, error: error as Error });
+
+      let message = "Erro ao buscar as tarefas.";
+
+      if (error instanceof AxiosError) {
+        if (error.response?.data?.message) {
+          message = error.response.data.message;
+        }
+      }
+
+      toast.error(message);
     }
   },
   fetchTaskById: async (id: string) => {
@@ -39,6 +51,16 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       set({ currentTask: response.data || null, isLoading: false });
     } catch (error) {
       set({ isLoading: false, isError: true, error: error as Error });
+
+      let message = "Erro ao buscar a tarefa.";
+
+      if (error instanceof AxiosError) {
+        if (error.response?.data?.message) {
+          message = error.response.data.message;
+        }
+      }
+
+      toast.error(message);
     }
   },
   createTask: async (task: TaskDTO) => {
@@ -54,8 +76,22 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       }
     } catch (error) {
       set({ isLoading: false, isError: true, error: error as Error });
+
+      let message = "Erro ao criar a tarefa.";
+
+      if (error instanceof AxiosError) {
+        if (error.response?.data?.message) {
+          message = error.response.data.message;
+        }
+      }
+
+      toast.error(message);
     } finally {
       set({ isLoading: false });
+      toast("Nova tarefa criada com sucesso!", {
+        duration: 3000,
+        description: "A nova tarefa foi criada com sucesso.",
+      });
     }
   },
   updateTask: async (id: string, task: Partial<TaskDTO>) => {
@@ -76,6 +112,17 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       }
     } catch (error) {
       set({ isError: true, error: error as Error });
+
+      let message = "Erro ao atualizar a tarefa.";
+
+      if (error instanceof AxiosError) {
+        if (error.response?.data?.message) {
+          message = error.response.data.message;
+        }
+      }
+      toast.error("Erro ao atualizar a tarefa.", {
+        description: message,
+      });
     }
   },
   updateTaskStatus: async (id: string, status: TaskStatus) => {
