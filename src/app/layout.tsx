@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${interSans.variable} ${geistMono.variable} ${loraSerif.variable} dark`}
+        className={`${interSans.variable} ${geistMono.variable} ${loraSerif.variable} dark overflow-hidden`}
       >
         <AppProvider>{children}</AppProvider>
       </body>
