@@ -48,6 +48,7 @@ export default function TaskPage({
           isLoading={isLoading}
           subtasks={task?.subtasks}
           parentId={task?.id}
+          title={task?.title}
         />
       </div>
     </div>

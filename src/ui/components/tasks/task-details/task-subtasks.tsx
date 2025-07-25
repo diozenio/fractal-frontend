@@ -10,28 +10,49 @@ import { TaskProps, StatusIcons, AddTaskDialog } from "@/ui/components/tasks";
 import { ListTodo, Plus, Sparkles, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTaskStore } from "@/store/task-store";
+import { useMutation } from "@tanstack/react-query";
 
 interface TaskSubtasksProps {
   parentId?: string;
   subtasks: TaskProps["subtasks"];
   isLoading?: boolean;
+  title?: string;
 }
 
 export function TaskSubtasks({
   subtasks,
   parentId,
   isLoading,
+  title,
 }: TaskSubtasksProps) {
   const router = useRouter();
   const { deleteSubtask } = useTaskStore();
 
-  if (isLoading) {
-    return <></>;
-  }
+  const generateMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ parentId, input: title }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        window.location.reload();
+      }
+    },
+    onError: (error) => {
+      console.error("Erro ao gerar subtarefas:", error);
+    },
+  });
 
   return (
     <div className="mt-6 group/subtasks space-y-6">
-      <div className="flex items-center gap-2 ">
+      <div className="flex items-center gap-2">
         <ListTodo size={16} />
         Subtarefas
         <AddTaskDialog parentId={parentId}>
@@ -45,7 +66,13 @@ export function TaskSubtasks({
         </AddTaskDialog>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="secondary" size="icon" className="ml-auto">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="ml-auto"
+              onClick={() => generateMutation.mutate()}
+              loading={generateMutation.isPending}
+            >
               <Sparkles />
             </Button>
           </TooltipTrigger>
@@ -61,7 +88,7 @@ export function TaskSubtasks({
             onClick={() => {
               router.push(`/tasks/${subtask.id}`);
             }}
-            className="flex group/subtask items-center gap-2 flex-row bg-muted/15 p-3 mb-2  border border-card-foreground/5 rounded-lg hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none"
+            className="flex group/subtask items-center gap-2 flex-row bg-muted/15 p-3 mb-2 border border-card-foreground/5 rounded-lg hover:bg-muted/50 transition-colors duration-300 hover:cursor-pointer select-none"
           >
             {StatusIcons[subtask.status]}
             <span className="text-sm font-medium truncate">
