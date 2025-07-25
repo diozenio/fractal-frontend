@@ -20,9 +20,16 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ defaultDate, onDateChange }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date | undefined>(
-    defaultDate ? new Date(defaultDate) : undefined
-  );
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (defaultDate) {
+      const parsedDate = new Date(defaultDate);
+      if (!isNaN(parsedDate.getTime())) {
+        setDate(parsedDate);
+      }
+    }
+  }, [defaultDate]);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
