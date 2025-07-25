@@ -4,12 +4,17 @@ import { Textarea } from "@/ui/primitives/textarea";
 import { useTaskStore } from "@/store/task-store";
 import { Text } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/ui/primitives/skeleton";
 
 interface TaskDescriptionProps {
   description?: string | null;
+  isLoading?: boolean;
 }
 
-export function TaskDescription({ description }: TaskDescriptionProps) {
+export function TaskDescription({
+  description,
+  isLoading,
+}: TaskDescriptionProps) {
   const [currentDescription, setCurrentDescription] = useState(
     description ?? ""
   );
@@ -30,6 +35,15 @@ export function TaskDescription({ description }: TaskDescriptionProps) {
       updateTask(currentTask.id, { description: currentDescription });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2 mt-6">
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-32 w-full" />
+      </div>
+    );
+  }
 
   return (
     <>

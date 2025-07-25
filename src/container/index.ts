@@ -1,11 +1,10 @@
 import AuthService from "@/core/services/AuthService";
 import TaskService from "@/core/services/TaskService";
 import AuthAPI from "@/infra/auth/AuthAPI";
-import TaskMock from "@/infra/tasks/TaskMock";
-import AuthMock from "@/infra/auth/AuthMock";
+import TaskAPI from "@/infra/tasks/TaskAPI";
 
-const AuthServiceInstance = new AuthService(new AuthMock());
-const TaskServiceInstance = new TaskService(new TaskMock());
+const AuthServiceInstance = new AuthService(new AuthAPI());
+const TaskServiceInstance = new TaskService(new TaskAPI());
 
 export const services = {
   AuthService: AuthServiceInstance,

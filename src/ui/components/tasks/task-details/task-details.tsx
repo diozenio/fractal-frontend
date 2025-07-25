@@ -13,12 +13,14 @@ import { StatusIcons, TaskProps } from "@/ui/components/tasks";
 import { useEffect, useState } from "react";
 import { useTaskStore } from "@/store/task-store";
 import { TaskPriority, TaskStatus } from "@/core/domain/models/task";
+import { Skeleton } from "@/ui/primitives/skeleton";
 
 interface TaskDetailsProps {
   task: TaskProps | null;
+  isLoading?: boolean;
 }
 
-export function TaskDetails({ task }: TaskDetailsProps) {
+export function TaskDetails({ task, isLoading }: TaskDetailsProps) {
   const [status, setStatus] = useState<TaskProps["status"]>(
     task?.status || "PLANNED"
   );
@@ -46,6 +48,19 @@ export function TaskDetails({ task }: TaskDetailsProps) {
       updateTask(task.id, { dueDate: newDate.toISOString() });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-xs grid grid-cols-2 gap-4 my-8">
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-8 w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-xs grid grid-cols-2 gap-4 my-8">

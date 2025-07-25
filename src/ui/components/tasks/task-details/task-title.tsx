@@ -12,12 +12,14 @@ import {
 import { Button } from "@/ui/primitives/button";
 import { useState, useRef, useEffect } from "react";
 import { useTaskStore } from "@/store/task-store";
+import { Skeleton } from "@/ui/primitives/skeleton";
 
 interface TaskTitleProps {
   initialTitle: string;
+  isLoading?: boolean;
 }
 
-export function TaskTitle({ initialTitle }: TaskTitleProps) {
+export function TaskTitle({ initialTitle, isLoading = false }: TaskTitleProps) {
   const [title, setTitle] = useState(initialTitle);
   const previousTitle = useRef(title);
   const { updateTask, currentTask } = useTaskStore();
@@ -26,6 +28,14 @@ export function TaskTitle({ initialTitle }: TaskTitleProps) {
     setTitle(initialTitle);
     previousTitle.current = initialTitle;
   }, [initialTitle]);
+
+  if (isLoading) {
+    return (
+      <div className="h-14">
+        <Skeleton className="w-full h-10" />
+      </div>
+    );
+  }
 
   const handleSubmit = () => {
     if (title.trim() === "") {
@@ -41,7 +51,12 @@ export function TaskTitle({ initialTitle }: TaskTitleProps) {
   };
 
   return (
-    <Editable value={title} onValueChange={setTitle} onSubmit={handleSubmit}>
+    <Editable
+      className="h-14"
+      value={title}
+      onValueChange={setTitle}
+      onSubmit={handleSubmit}
+    >
       <EditableArea>
         <EditablePreview className="!text-2xl font-bold truncate" />
         <EditableInput />

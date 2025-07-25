@@ -16,7 +16,7 @@ export default function TaskPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { currentTask: task, fetchTaskById } = useTaskStore();
+  const { currentTask: task, fetchTaskById, isLoading } = useTaskStore();
 
   useEffect(() => {
     fetchTaskById(id);
@@ -35,10 +35,20 @@ export default function TaskPage({
   return (
     <div className="flex h-[calc(100vh-56px)] flex-col p-4">
       <div className="w-full max-w-2xl mx-auto mt-12">
-        <TaskTitle initialTitle={task?.title || "Tarefa Detalhada"} />
-        <TaskDetails task={task} />
-        <TaskDescription description={task?.description} />
-        <TaskSubtasks subtasks={task?.subtasks} parentId={task?.id} />
+        <TaskTitle
+          isLoading={isLoading}
+          initialTitle={task?.title || "Tarefa Detalhada"}
+        />
+        <TaskDetails isLoading={isLoading} task={task} />
+        <TaskDescription
+          isLoading={isLoading}
+          description={task?.description}
+        />
+        <TaskSubtasks
+          isLoading={isLoading}
+          subtasks={task?.subtasks}
+          parentId={task?.id}
+        />
       </div>
     </div>
   );

@@ -14,11 +14,20 @@ import { useTaskStore } from "@/store/task-store";
 interface TaskSubtasksProps {
   parentId?: string;
   subtasks: TaskProps["subtasks"];
+  isLoading?: boolean;
 }
 
-export function TaskSubtasks({ subtasks, parentId }: TaskSubtasksProps) {
+export function TaskSubtasks({
+  subtasks,
+  parentId,
+  isLoading,
+}: TaskSubtasksProps) {
   const router = useRouter();
   const { deleteSubtask } = useTaskStore();
+
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <div className="mt-6 group/subtasks space-y-6">
