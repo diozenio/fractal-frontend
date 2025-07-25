@@ -42,10 +42,13 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     }
   },
   createTask: async (task: TaskDTO) => {
-    set({ isLoading: true, isError: false, error: null });
     try {
       await services.TaskService.createTask(task);
-      await get().fetchTasks();
+
+      const response = await services.TaskService.getTasks();
+
+      set({ tasks: response.data || [] });
+
       if (task.parentId) {
         await get().fetchTaskById(task.parentId);
       }
