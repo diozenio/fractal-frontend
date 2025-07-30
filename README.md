@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fractal Frontend
+
+> Frontend for a task management application with a modern, responsive interface.
+
+## Features
+
+-   **Authentication**: Secure user authentication including signup, login, and Google social login.
+-   **Task Management**: Full CRUD (Create, Read, Update, Delete) operations for tasks and subtasks, displayed on a drag-and-drop Kanban board.
+-   **AI Subtask Generation**: Automatically break down tasks into smaller subtasks using AI.
+-   **Responsive Design**: A user-friendly interface that adapts to different screen sizes.
+-   **Session Management**: Uses JWT stored in cookies for managing user sessions.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Before you begin, make sure you have the following installed:
+-   Node.js >= 18
+-   pnpm
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/diozenio/fractal-frontend.git
+cd fractal-frontend
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file by copying the example:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Or manually create a *.env* file with the following content from the example:
 
-## Learn More
+```env
+# Next
+NEXT_PUBLIC_API_URL=
 
-To learn more about Next.js, take a look at the following resources:
+# Google OAuth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_REDIRECT_URI=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# JWT
+JWT_SECRET=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Running the App
 
-## Deploy on Vercel
+Run the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm dev
+```
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Folder Structure
+
+```
+fractal-frontend/
+├── src/
+│   ├── app/         → Routing, pages, and layouts for the Next.js application
+│   ├── ui/          → Reusable UI components
+│   ├── constants/   → Application constants
+│   ├── container/   → Dependency injection container for services
+│   ├── core/        → Core business logic, domain models, services, and use cases
+│   ├── hooks/       → Custom React hooks for state management and side effects
+│   ├── infra/       → Infrastructure layer (API clients, mock data)
+│   ├── lib/         → Utility functions and libraries (API client, JWT, cookies)
+│   ├── providers/   → React context providers for managing global state
+│   └── store/       → Zustand stores for state management
+└── public/          → Static assets like images and fonts
+```
+
+---
+
+## Technologies Used
+
+-   **Framework**: Next.js (React)
+-   **Styling**: Tailwind CSS, shadcn/ui
+-   **State Management**: Zustand, React Query
+-   **Data Fetching**: Axios
+-   **Type Checking**: TypeScript
+-   **Validation**: Zod
+-   **Package Manager**: pnpm
+
+---
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+## License
+
+MIT
