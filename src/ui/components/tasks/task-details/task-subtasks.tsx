@@ -19,12 +19,7 @@ interface TaskSubtasksProps {
   title?: string;
 }
 
-export function TaskSubtasks({
-  subtasks,
-  parentId,
-  isLoading,
-  title,
-}: TaskSubtasksProps) {
+export function TaskSubtasks({ subtasks, parentId, title }: TaskSubtasksProps) {
   const router = useRouter();
   const { deleteSubtask } = useTaskStore();
 
