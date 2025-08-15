@@ -5,6 +5,7 @@ export const AUTH_COOKIE_NAME = "session_token";
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
   maxAge: 60 * 60 * 24 * 30, // 30 days
   path: "/",
 };
